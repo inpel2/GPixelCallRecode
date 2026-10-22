@@ -127,6 +127,8 @@
 
 .field inqBox:Landroid/widget/FrameLayout;
 
+.field private permAsked:I
+
 
 # direct methods
 .method static constructor <clinit>()V
@@ -5246,9 +5248,59 @@
 
     invoke-virtual {v0, v1, v2}, Landroid/app/AlertDialog$Builder;->setNegativeButton(Ljava/lang/CharSequence;Landroid/content/DialogInterface$OnClickListener;)Landroid/app/AlertDialog$Builder;
 
+    const/4 v3, 0x1
+
+    iput v3, p0, Lcom/tmp/callrec/MainActivity;->permAsked:I
+
     invoke-virtual {v0}, Landroid/app/AlertDialog$Builder;->show()Landroid/app/AlertDialog;
 
     :done
+    return-void
+.end method
+
+.method protected onResume()V
+    .locals 4
+
+    invoke-super {p0}, Landroid/app/Activity;->onResume()V
+
+    invoke-static {}, Landroid/os/Environment;->isExternalStorageManager()Z
+
+    move-result v0
+
+    if-nez v0, :granted
+
+    iget v1, p0, Lcom/tmp/callrec/MainActivity;->permAsked:I
+
+    if-nez v1, :fin
+
+    invoke-virtual {p0}, Lcom/tmp/callrec/MainActivity;->permChk()V
+
+    goto :fin
+
+    :granted
+    iget v1, p0, Lcom/tmp/callrec/MainActivity;->permAsked:I
+
+    const/4 v2, 0x1
+
+    if-ne v1, v2, :fin
+
+    const/4 v2, 0x2
+
+    iput v2, p0, Lcom/tmp/callrec/MainActivity;->permAsked:I
+
+    invoke-virtual {p0}, Lcom/tmp/callrec/MainActivity;->rebuild()V
+
+    const-string v1, "\uad8c\ud55c\uc774 \ud5c8\uc6a9\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \ubaa9\ub85d\uc744 \ubd88\ub7ec\uc654\uc2b5\ub2c8\ub2e4."
+
+    const/4 v2, 0x0
+
+    invoke-static {p0, v1, v2}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+
+    move-result-object v1
+
+    invoke-virtual {v1}, Landroid/widget/Toast;->show()V
+
+    :fin
     return-void
 .end method
 
