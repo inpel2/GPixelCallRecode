@@ -7159,7 +7159,13 @@
 
     invoke-direct {v0, v1}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
 
+    const/16 v1, 0x41
+
+    invoke-virtual {v0, v1}, Landroid/content/Intent;->addFlags(I)Landroid/content/Intent;
+
     iget-object v2, p0, Lcom/tmp/callrec/MainActivity;->dir:Ljava/io/File;
+
+    if-eqz v2, :cond_nx
 
     invoke-virtual {v2}, Ljava/io/File;->toString()Ljava/lang/String;
 
@@ -7179,7 +7185,7 @@
 
     move-result-object v2
 
-    goto :goto_docid
+    goto :goto_doc
 
     :cond_sd
     const-string v4, "/sdcard/"
@@ -7188,7 +7194,7 @@
 
     move-result v5
 
-    if-eqz v5, :cond_root
+    if-eqz v5, :cond_rt
 
     const/16 v3, 0x8
 
@@ -7196,12 +7202,12 @@
 
     move-result-object v2
 
-    goto :goto_docid
+    goto :goto_doc
 
-    :cond_root
+    :cond_rt
     const-string v2, ""
 
-    :goto_docid
+    :goto_doc
     new-instance v3, Ljava/lang/StringBuilder;
 
     invoke-direct {v3}, Ljava/lang/StringBuilder;-><init>()V
@@ -7226,10 +7232,42 @@
 
     invoke-virtual {v0, v4, v3}, Landroid/content/Intent;->putExtra(Ljava/lang/String;Landroid/os/Parcelable;)Landroid/content/Intent;
 
+    :cond_nx
+    :try_start_lp
+    const-string v1, "com.google.android.documentsui"
+
+    invoke-virtual {v0, v1}, Landroid/content/Intent;->setPackage(Ljava/lang/String;)Landroid/content/Intent;
+
     const/16 v1, 0x1bcd
 
     invoke-virtual {p0, v0, v1}, Landroid/app/Activity;->startActivityForResult(Landroid/content/Intent;I)V
 
+    :try_end_lp
+    .catch Ljava/lang/Throwable; {:try_start_lp .. :try_end_lp} :catch_lp
+
+    return-void
+
+    :catch_lp
+    move-exception v5
+
+    const/4 v1, 0x0
+
+    invoke-virtual {v0, v1}, Landroid/content/Intent;->setPackage(Ljava/lang/String;)Landroid/content/Intent;
+
+    :try_start_fb
+    const/16 v1, 0x1bcd
+
+    invoke-virtual {p0, v0, v1}, Landroid/app/Activity;->startActivityForResult(Landroid/content/Intent;I)V
+
+    :try_end_fb
+    .catch Ljava/lang/Throwable; {:try_start_fb .. :try_end_fb} :catch_fb
+
+    goto :goto_fin
+
+    :catch_fb
+    nop
+
+    :goto_fin
     return-void
 .end method
 

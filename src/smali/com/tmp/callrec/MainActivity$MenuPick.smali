@@ -140,7 +140,7 @@
     :cond_item3
     const/4 v2, 0x3
 
-    if-ne v1, v2, :cond_ret
+    if-ne v1, v2, :cond_item4
 
     # 앱 재시작
     new-instance v3, Landroid/content/Intent;
