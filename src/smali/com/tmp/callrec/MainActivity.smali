@@ -77,6 +77,8 @@
 
 .field lastAvatarColor:I
 
+.field lastDay:Ljava/lang/String;
+
 .field lv:Landroid/widget/ListView;
 
 .field mp:Landroid/media/MediaPlayer;
@@ -273,6 +275,56 @@
     .line 397
     move-object/from16 v0, p0
 
+    move-object/from16 v2, p2
+
+    const/4 v3, 0x0
+
+    invoke-interface {v2, v3}, Ljava/util/List;->get(I)Ljava/lang/Object;
+
+    move-result-object v4
+
+    check-cast v4, Ljava/io/File;
+
+    invoke-virtual {v0, v4}, Lcom/tmp/callrec/MainActivity;->dayOf(Ljava/io/File;)Ljava/lang/String;
+
+    move-result-object v5
+
+    if-eqz v5, :nohdr
+
+    iget-object v6, v0, Lcom/tmp/callrec/MainActivity;->lastDay:Ljava/lang/String;
+
+    if-eqz v6, :mkhdr
+
+    invoke-virtual {v6, v5}, Ljava/lang/String;->equals(Ljava/lang/Object;)Z
+
+    move-result v6
+
+    if-nez v6, :nohdr
+
+    :mkhdr
+    iput-object v5, v0, Lcom/tmp/callrec/MainActivity;->lastDay:Ljava/lang/String;
+
+    new-instance v6, Lcom/tmp/callrec/MainActivity$Row;
+
+    invoke-direct {v6}, Lcom/tmp/callrec/MainActivity$Row;-><init>()V
+
+    const/4 v7, 0x2
+
+    iput v7, v6, Lcom/tmp/callrec/MainActivity$Row;->type:I
+
+    invoke-virtual {v0, v5}, Lcom/tmp/callrec/MainActivity;->fmtDay(Ljava/lang/String;)Ljava/lang/String;
+
+    move-result-object v7
+
+    iput-object v7, v6, Lcom/tmp/callrec/MainActivity$Row;->key:Ljava/lang/String;
+
+    iput-object v7, v6, Lcom/tmp/callrec/MainActivity$Row;->name:Ljava/lang/String;
+
+    iget-object v7, v0, Lcom/tmp/callrec/MainActivity;->rows:Ljava/util/List;
+
+    invoke-interface {v7, v6}, Ljava/util/List;->add(Ljava/lang/Object;)Z
+
+    :nohdr
     new-instance v1, Lcom/tmp/callrec/MainActivity$Row;
 
     invoke-direct {v1}, Lcom/tmp/callrec/MainActivity$Row;-><init>()V
@@ -590,7 +642,7 @@
 
     .line 417
     :goto_6
-    invoke-virtual {v0, v1}, Lcom/tmp/callrec/MainActivity;->applyAvatar(Lcom/tmp/callrec/MainActivity$Row;)V
+    invoke-virtual {v0, v1, v5}, Lcom/tmp/callrec/MainActivity;->applyAvatar(Lcom/tmp/callrec/MainActivity$Row;Ljava/util/List;)V
 
     .line 420
     invoke-virtual {v3}, Ljava/lang/String;->hashCode()I
@@ -1178,67 +1230,6 @@
 
     invoke-virtual {v0, v2, v4, v5, v3}, Landroid/widget/LinearLayout;->setPadding(IIII)V
 
-    # avatar row line
-    iget-object v7, p1, Lcom/tmp/callrec/MainActivity$Row;->file:Ljava/io/File;
-
-    new-instance v2, Landroid/widget/LinearLayout;
-
-    invoke-direct {v2, p0}, Landroid/widget/LinearLayout;-><init>(Landroid/content/Context;)V
-
-    const/16 v3, 0x0
-
-    invoke-virtual {v2, v3}, Landroid/widget/LinearLayout;->setOrientation(I)V
-
-    invoke-virtual {p0, v7}, Lcom/tmp/callrec/MainActivity;->fileAvatar(Ljava/io/File;)Landroid/view/View;
-
-    move-result-object v5
-
-    invoke-virtual {v2, v5}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;)V
-
-    invoke-virtual {p0, v7}, Lcom/tmp/callrec/MainActivity;->contactOf(Ljava/io/File;)Ljava/lang/String;
-
-    move-result-object v6
-
-    new-instance v7, Landroid/widget/TextView;
-
-    invoke-direct {v7, p0}, Landroid/widget/TextView;-><init>(Landroid/content/Context;)V
-
-    invoke-virtual {v7, v6}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
-
-    const v6, -0x131211
-
-    invoke-virtual {v7, v6}, Landroid/widget/TextView;->setTextColor(I)V
-
-    const/high16 v6, 0x41800000    # 16.0f
-
-    invoke-virtual {v7, v6}, Landroid/widget/TextView;->setTextSize(F)V
-
-    const/4 v6, 0x0
-
-    invoke-virtual {v7, v6, v6}, Landroid/widget/TextView;->setTypeface(Landroid/graphics/Typeface;I)V
-
-    new-instance v5, Landroid/widget/LinearLayout$LayoutParams;
-
-    const/4 v6, -0x2
-
-    invoke-direct {v5, v6, v6}, Landroid/widget/LinearLayout$LayoutParams;-><init>(II)V
-
-    const/high16 v6, 0x40c00000    # 6.0f
-
-    invoke-virtual {p0, v6}, Lcom/tmp/callrec/MainActivity;->dp(F)F
-
-    move-result v6
-
-    float-to-int v6, v6
-
-    const/4 v8, 0x0
-
-    invoke-virtual {v5, v6, v8, v8, v8}, Landroid/widget/LinearLayout$LayoutParams;->setMargins(IIII)V
-
-    invoke-virtual {v2, v7, v5}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
-
-    invoke-virtual {v0, v2}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;)V
-
     .line 605
     new-instance v2, Landroid/widget/LinearLayout;
 
@@ -1504,7 +1495,7 @@
 .end method
 
 .method fmtDate(Ljava/lang/String;)Ljava/lang/String;
-    .locals 6
+    .locals 8
 
     .line 282
     sget-object v0, Lcom/tmp/callrec/MainActivity;->TMPAT:Ljava/util/regex/Pattern;
@@ -1574,9 +1565,15 @@
     .line 287
     invoke-virtual {p1, v3}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
-    move-result-object p1
+    move-result-object v6
 
-    invoke-virtual {p1, v3, v2}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+    const/16 v7, 0x6
+
+    invoke-virtual {v6, v2, v7}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-virtual {v6, v3, v2}, Ljava/lang/String;->substring(II)Ljava/lang/String;
 
     move-result-object p1
 
@@ -1650,6 +1647,16 @@
     move-result-object v0
 
     invoke-virtual {v0, p1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object p1
+
+    const-string v1, ":"
+
+    invoke-virtual {p1, v1}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object p1
+
+    invoke-virtual {p1, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object p1
 
@@ -1895,6 +1902,57 @@
     invoke-virtual {v1, v2, v5, v0, v4}, Landroid/widget/LinearLayout;->setPadding(IIII)V
 
     .line 566
+    iget-object v2, p1, Lcom/tmp/callrec/MainActivity$Row;->photo:Landroid/graphics/Bitmap;
+
+    if-eqz v2, :tlt
+
+    new-instance v0, Landroid/widget/ImageView;
+
+    invoke-direct {v0, p0}, Landroid/widget/ImageView;-><init>(Landroid/content/Context;)V
+
+    invoke-virtual {v0, v2}, Landroid/widget/ImageView;->setImageBitmap(Landroid/graphics/Bitmap;)V
+
+    sget-object v2, Landroid/widget/ImageView$ScaleType;->CENTER_CROP:Landroid/widget/ImageView$ScaleType;
+
+    invoke-virtual {v0, v2}, Landroid/widget/ImageView;->setScaleType(Landroid/widget/ImageView$ScaleType;)V
+
+    const/4 v2, 0x0
+
+    const/4 v4, 0x0
+
+    new-instance v6, Landroid/widget/LinearLayout$LayoutParams;
+
+    const/high16 v7, 0x42300000    # 44.0f
+
+    invoke-virtual {p0, v7}, Lcom/tmp/callrec/MainActivity;->dp(F)F
+
+    move-result v8
+
+    float-to-int v8, v8
+
+    invoke-virtual {p0, v7}, Lcom/tmp/callrec/MainActivity;->dp(F)F
+
+    move-result v7
+
+    float-to-int v7, v7
+
+    invoke-direct {v6, v8, v7}, Landroid/widget/LinearLayout$LayoutParams;-><init>(II)V
+
+    const/high16 v7, 0x41600000    # 14.0f
+
+    invoke-virtual {p0, v7}, Lcom/tmp/callrec/MainActivity;->dp(F)F
+
+    move-result v7
+
+    float-to-int v7, v7
+
+    iput v7, v6, Landroid/widget/LinearLayout$LayoutParams;->rightMargin:I
+
+    invoke-virtual {v1, v0, v6}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+
+    goto :avz_end
+
+    :tlt
     new-instance v0, Landroid/widget/TextView;
 
     invoke-direct {v0, p0}, Landroid/widget/TextView;-><init>(Landroid/content/Context;)V
@@ -1967,6 +2025,8 @@
     .line 575
     invoke-virtual {v0, v6}, Landroid/widget/TextView;->setBackground(Landroid/graphics/drawable/Drawable;)V
 
+    :avz
+
     .line 576
     new-instance v6, Landroid/widget/LinearLayout$LayoutParams;
 
@@ -2001,6 +2061,8 @@
     .line 579
     invoke-virtual {v1, v0, v6}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
 
+    :avz_end
+
     .line 581
     new-instance v0, Landroid/widget/LinearLayout;
 
@@ -2008,28 +2070,6 @@
 
     .line 582
     invoke-virtual {v0, v5}, Landroid/widget/LinearLayout;->setOrientation(I)V
-
-    new-instance v6, Landroid/widget/TextView;
-
-    invoke-direct {v6, p0}, Landroid/widget/TextView;-><init>(Landroid/content/Context;)V
-
-    iget-object v7, p1, Lcom/tmp/callrec/MainActivity$Row;->key:Ljava/lang/String;
-
-    invoke-virtual {p0, v7}, Lcom/tmp/callrec/MainActivity;->fmtDay(Ljava/lang/String;)Ljava/lang/String;
-
-    move-result-object v7
-
-    invoke-virtual {v6, v7}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
-
-    const v7, -0x655f5a
-
-    invoke-virtual {v6, v7}, Landroid/widget/TextView;->setTextColor(I)V
-
-    const/high16 v7, 0x41300000    # 11.0f
-
-    invoke-virtual {v6, v7}, Landroid/widget/TextView;->setTextSize(F)V
-
-    invoke-virtual {v0, v6}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;)V
 
     .line 583
     new-instance v6, Landroid/widget/TextView;
@@ -3537,6 +3577,10 @@
     iget-object v0, p0, Lcom/tmp/callrec/MainActivity;->flatFiles:Ljava/util/List;
 
     invoke-interface {v0}, Ljava/util/List;->clear()V
+
+    const/4 v7, 0x0
+
+    iput-object v7, p0, Lcom/tmp/callrec/MainActivity;->lastDay:Ljava/lang/String;
 
     .line 368
     const/4 v0, -0x1
@@ -5865,70 +5909,102 @@
     return-object p1
 .end method
 
-.method public applyAvatar(Lcom/tmp/callrec/MainActivity$Row;)V
+.method public applyAvatar(Lcom/tmp/callrec/MainActivity$Row;Ljava/util/List;)V
     .locals 7
 
     :try_start_0
-    iget-object v5, p1, Lcom/tmp/callrec/MainActivity$Row;->key:Ljava/lang/String;
+    const/4 v0, 0x0
 
-    invoke-virtual {v5}, Ljava/lang/String;->length()I
+    invoke-interface {p2, v0}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
-    move-result v3
+    move-result-object v0
 
-    const/16 v4, 0x8
+    check-cast v0, Ljava/io/File;
 
-    if-lt v3, v4, :reh
+    invoke-virtual {p0, v0}, Lcom/tmp/callrec/MainActivity;->photoBitmap(Ljava/io/File;)Landroid/graphics/Bitmap;
 
-    new-instance v1, Ljava/lang/StringBuilder;
+    move-result-object v1
 
-    invoke-direct {v1}, Ljava/lang/StringBuilder;-><init>()V
+    iput-object v1, p1, Lcom/tmp/callrec/MainActivity$Row;->photo:Landroid/graphics/Bitmap;
 
-    iget-object v5, p1, Lcom/tmp/callrec/MainActivity$Row;->key:Ljava/lang/String;
+    iget-object v1, p1, Lcom/tmp/callrec/MainActivity$Row;->name:Ljava/lang/String;
 
-    const/4 v2, 0x4
+    if-eqz v1, :num
 
-    const/16 v3, 0x6
+    invoke-virtual {v1}, Ljava/lang/String;->length()I
 
-    invoke-virtual {v5, v2, v3}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+    move-result v2
 
-    move-result-object v2
+    if-lez v2, :num
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    const/4 v2, 0x0
 
-    const-string v2, "/"
+    invoke-virtual {v1, v2}, Ljava/lang/String;->charAt(I)C
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    move-result v2
 
-    const/16 v2, 0x6
+    const/16 v3, 0x30
 
-    const/16 v3, 0x8
+    if-lt v2, v3, :letter
 
-    invoke-virtual {v5, v2, v3}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+    const/16 v3, 0x39
 
-    move-result-object v2
+    if-gt v2, v3, :letter
 
-    invoke-virtual {v1, v2}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+    :last4
+    invoke-virtual {p0, v1}, Lcom/tmp/callrec/MainActivity;->digitsOnly(Ljava/lang/String;)Ljava/lang/String;
 
-    invoke-virtual {v1}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+    move-result-object v1
+
+    invoke-virtual {v1}, Ljava/lang/String;->length()I
+
+    move-result v2
+
+    const/16 v3, 0x4
+
+    if-gt v2, v3, :cut
+
+    iput-object v1, p1, Lcom/tmp/callrec/MainActivity$Row;->letter:Ljava/lang/String;
+
+    goto :done
+
+    :cut
+    sub-int/2addr v2, v3
+
+    invoke-virtual {v1, v2}, Ljava/lang/String;->substring(I)Ljava/lang/String;
 
     move-result-object v1
 
     iput-object v1, p1, Lcom/tmp/callrec/MainActivity$Row;->letter:Ljava/lang/String;
 
+    goto :done
+
+    :letter
+    const/4 v2, 0x0
+
+    const/4 v3, 0x1
+
+    invoke-virtual {v1, v2, v3}, Ljava/lang/String;->substring(II)Ljava/lang/String;
+
+    move-result-object v2
+
+    iput-object v2, p1, Lcom/tmp/callrec/MainActivity$Row;->letter:Ljava/lang/String;
+
+    goto :done
+
+    :num
+    const-string v1, "#"
+
+    iput-object v1, p1, Lcom/tmp/callrec/MainActivity$Row;->letter:Ljava/lang/String;
+
+    :done
     :try_end_0
     .catch Ljava/lang/Throwable; {:try_start_0 .. :try_end_0} :catchd
 
     return-void
 
-    :reh
-    const-string v1, "#"
-
-    iput-object v1, p1, Lcom/tmp/callrec/MainActivity$Row;->letter:Ljava/lang/String;
-
-    return-void
-
     :catchd
-    move-exception v1
+    move-exception v0
 
     return-void
 .end method
@@ -6267,6 +6343,110 @@
     const/4 v7, 0x0
 
     return-object v7
+.end method
+
+.method public dayOf(Ljava/io/File;)Ljava/lang/String;
+    .locals 4
+
+    :try_start_0
+    invoke-virtual {p1}, Ljava/io/File;->getName()Ljava/lang/String;
+
+    move-result-object v0
+
+    sget-object v1, Lcom/tmp/callrec/MainActivity;->TMPAT:Ljava/util/regex/Pattern;
+
+    invoke-virtual {v1, v0}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
+
+    move-result-object v0
+
+    invoke-virtual {v0}, Ljava/util/regex/Matcher;->find()Z
+
+    move-result v1
+
+    if-eqz v1, :rawd
+
+    const/4 v1, 0x1
+
+    invoke-virtual {v0, v1}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
+
+    move-result-object v0
+
+    return-object v0
+
+    :rawd
+    const/4 v0, 0x0
+
+    return-object v0
+
+    :try_end_0
+    .catch Ljava/lang/Throwable; {:try_start_0 .. :try_end_0} :catche
+
+    :catche
+    move-exception v0
+
+    const/4 v0, 0x0
+
+    return-object v0
+.end method
+
+.method public dayView(Lcom/tmp/callrec/MainActivity$Row;)Landroid/view/View;
+    .locals 6
+
+    new-instance v0, Landroid/widget/LinearLayout;
+
+    invoke-direct {v0, p0}, Landroid/widget/LinearLayout;-><init>(Landroid/content/Context;)V
+
+    const/4 v1, 0x0
+
+    invoke-virtual {v0, v1}, Landroid/widget/LinearLayout;->setOrientation(I)V
+
+    iget v1, p0, Lcom/tmp/callrec/MainActivity;->dens:F
+
+    const/high16 v2, 0x41e00000    # 28.0f
+
+    mul-float v1, v1, v2
+
+    float-to-int v1, v1
+
+    iget v2, p0, Lcom/tmp/callrec/MainActivity;->dens:F
+
+    const/high16 v3, 0x41000000    # 8.0f
+
+    mul-float v2, v2, v3
+
+    float-to-int v2, v2
+
+    invoke-virtual {v0, v1, v2, v1, v1}, Landroid/widget/LinearLayout;->setPadding(IIII)V
+
+    new-instance v3, Landroid/widget/TextView;
+
+    invoke-direct {v3, p0}, Landroid/widget/TextView;-><init>(Landroid/content/Context;)V
+
+    iget-object v4, p1, Lcom/tmp/callrec/MainActivity$Row;->name:Ljava/lang/String;
+
+    invoke-virtual {v3, v4}, Landroid/widget/TextView;->setText(Ljava/lang/CharSequence;)V
+
+    const v4, -0x655f5a
+
+    invoke-virtual {v3, v4}, Landroid/widget/TextView;->setTextColor(I)V
+
+    iget v4, p0, Lcom/tmp/callrec/MainActivity;->dens:F
+
+    const/high16 v5, 0x41500000    # 13.0f
+
+    mul-float v4, v4, v5
+
+    invoke-virtual {v3, v4}, Landroid/widget/TextView;->setTextSize(F)V
+
+    const/4 v4, 0x0
+
+    const/4 v5, 0x1
+
+    invoke-virtual {v3, v4, v5}, Landroid/widget/TextView;->setTypeface(Landroid/graphics/Typeface;I)V
+
+    invoke-virtual {v0, v3}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;)V
+
+    return-object v0
 .end method
 
 .method public photoBitmap(Ljava/io/File;)Landroid/graphics/Bitmap;
@@ -6880,7 +7060,7 @@
     move-result-object v3
 
     :try_start_0
-    sget-object v0, Lcom/tmp/callrec/MainActivity;->TMPAT:Ljava/util/regex/Pattern;
+    sget-object v0, Lcom/tmp/callrec/MainActivity;->NUMPAT:Ljava/util/regex/Pattern;
 
     invoke-virtual {v0, v3}, Ljava/util/regex/Pattern;->matcher(Ljava/lang/CharSequence;)Ljava/util/regex/Matcher;
 

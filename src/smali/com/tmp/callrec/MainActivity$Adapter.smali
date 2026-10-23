@@ -126,9 +126,23 @@
     goto :goto_0
 
     :cond_0
+    const/4 p3, 0x2
+
+    if-eq p2, p3, :hdr
+
+    .line 643
     iget-object p2, p0, Lcom/tmp/callrec/MainActivity$Adapter;->this$0:Lcom/tmp/callrec/MainActivity;
 
     invoke-virtual {p2, p1}, Lcom/tmp/callrec/MainActivity;->fileView(Lcom/tmp/callrec/MainActivity$Row;)Landroid/view/View;
+
+    move-result-object p1
+
+    goto :goto_0
+
+    :hdr
+    iget-object p2, p0, Lcom/tmp/callrec/MainActivity$Adapter;->this$0:Lcom/tmp/callrec/MainActivity;
+
+    invoke-virtual {p2, p1}, Lcom/tmp/callrec/MainActivity;->dayView(Lcom/tmp/callrec/MainActivity$Row;)Landroid/view/View;
 
     move-result-object p1
 
@@ -140,7 +154,7 @@
     .locals 1
 
     .line 637
-    const/4 v0, 0x2
+    const/4 v0, 0x3
 
     return v0
 .end method

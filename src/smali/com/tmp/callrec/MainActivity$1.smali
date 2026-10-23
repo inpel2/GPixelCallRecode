@@ -105,6 +105,15 @@
 
     .line 163
     :cond_1
+    iget p2, p1, Lcom/tmp/callrec/MainActivity$Row;->type:I
+
+    const/4 p3, 0x1
+
+    if-eq p2, p3, :play
+
+    return-void
+
+    :play
     iget-object p2, p0, Lcom/tmp/callrec/MainActivity$1;->this$0:Lcom/tmp/callrec/MainActivity;
 
     iget-object p1, p1, Lcom/tmp/callrec/MainActivity$Row;->file:Ljava/io/File;

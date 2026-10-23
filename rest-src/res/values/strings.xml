@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">GPixel Auto Recode</string>
+    <string name="svc_desc">통화가 시작되면 전화 앱의 녹음 버튼을 자동으로 눌러 통화를 녹음합니다.</string>
+</resources>
