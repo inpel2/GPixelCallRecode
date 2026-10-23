@@ -429,7 +429,7 @@
 
     move-result v2
 
-    add-int/lit8 v2, v2, -0x1
+    const/4 v2, 0x0
 
     invoke-interface {v5, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
@@ -2364,7 +2364,7 @@
 
     move-result-wide p1
 
-    invoke-static {p1, p2, v0, v1}, Ljava/lang/Long;->compare(JJ)I
+    invoke-static {v0, v1, p1, p2}, Ljava/lang/Long;->compare(JJ)I
 
     move-result p1
 
@@ -7116,211 +7116,7 @@
 
     :keepnum
 
-    const/4 v0, 0x2
-
-    invoke-virtual {v2, v0}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
-
-    move-result-object v4
-
-    invoke-static {}, Ljava/util/Calendar;->getInstance()Ljava/util/Calendar;
-
-    move-result-object v5
-
-    invoke-virtual {v5}, Ljava/util/Calendar;->clear()V
-
-    const/4 v10, 0x0
-
-    const/4 v11, 0x4
-
-    invoke-virtual {v3, v10, v11}, Ljava/lang/String;->substring(II)Ljava/lang/String;
-
-    move-result-object v10
-
-    invoke-static {v10}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v10
-
-    const/4 v0, 0x1
-
-    invoke-virtual {v5, v0, v10}, Ljava/util/Calendar;->set(II)V
-
-    const/4 v10, 0x4
-
-    const/4 v11, 0x6
-
-    invoke-virtual {v3, v10, v11}, Ljava/lang/String;->substring(II)Ljava/lang/String;
-
-    move-result-object v10
-
-    invoke-static {v10}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v10
-
-    add-int/lit8 v10, v10, -0x1
-
-    const/4 v0, 0x2
-
-    invoke-virtual {v5, v0, v10}, Ljava/util/Calendar;->set(II)V
-
-    const/4 v10, 0x6
-
-    const/16 v11, 0x8
-
-    invoke-virtual {v3, v10, v11}, Ljava/lang/String;->substring(II)Ljava/lang/String;
-
-    move-result-object v10
-
-    invoke-static {v10}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v10
-
-    const/4 v0, 0x5
-
-    invoke-virtual {v5, v0, v10}, Ljava/util/Calendar;->set(II)V
-
-    const/4 v10, 0x0
-
-    const/4 v11, 0x2
-
-    invoke-virtual {v4, v10, v11}, Ljava/lang/String;->substring(II)Ljava/lang/String;
-
-    move-result-object v10
-
-    invoke-static {v10}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v10
-
-    const/16 v0, 0xb
-
-    invoke-virtual {v5, v0, v10}, Ljava/util/Calendar;->set(II)V
-
-    const/4 v10, 0x2
-
-    const/4 v11, 0x4
-
-    invoke-virtual {v4, v10, v11}, Ljava/lang/String;->substring(II)Ljava/lang/String;
-
-    move-result-object v10
-
-    invoke-static {v10}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v10
-
-    const/16 v0, 0xc
-
-    invoke-virtual {v5, v0, v10}, Ljava/util/Calendar;->set(II)V
-
-    const/4 v10, 0x4
-
-    const/4 v11, 0x6
-
-    invoke-virtual {v4, v10, v11}, Ljava/lang/String;->substring(II)Ljava/lang/String;
-
-    move-result-object v10
-
-    invoke-static {v10}, Ljava/lang/Integer;->parseInt(Ljava/lang/String;)I
-
-    move-result v10
-
-    const/16 v0, 0xd
-
-    invoke-virtual {v5, v0, v10}, Ljava/util/Calendar;->set(II)V
-
-    invoke-virtual {v5}, Ljava/util/Calendar;->getTimeInMillis()J
-
-    move-result-wide v12
-
     return-object v3
-
-    const-wide/32 v10, 0x493e0
-
-    move-wide v6, v12
-
-    add-long/2addr v6, v10
-
-    invoke-static {v6, v7}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
-
-    move-result-object v6
-
-    neg-long v10, v10
-
-    add-long/2addr v12, v10
-
-    invoke-static {v12, v13}, Ljava/lang/Long;->toString(J)Ljava/lang/String;
-
-    move-result-object v12
-
-    invoke-virtual {p0}, Landroid/content/Context;->getContentResolver()Landroid/content/ContentResolver;
-
-    move-result-object v7
-
-    const/4 v9, 0x2
-
-    new-array v9, v9, [Ljava/lang/String;
-
-    sget-object v1, Landroid/provider/CallLog$Calls;->NUMBER:Ljava/lang/String;
-
-    const/4 v2, 0x0
-
-    aput-object v1, v9, v2
-
-    sget-object v1, Landroid/provider/CallLog$Calls;->DATE:Ljava/lang/String;
-
-    const/4 v2, 0x1
-
-    aput-object v1, v9, v2
-
-    const/4 v11, 0x2
-
-    new-array v11, v11, [Ljava/lang/String;
-
-    const/4 v2, 0x0
-
-    aput-object v12, v11, v2
-
-    const/4 v2, 0x1
-
-    aput-object v6, v11, v2
-
-    const-string v10, "DATE>=? AND DATE<=?"
-
-    const-string v12, "date DESC"
-
-    sget-object v8, Landroid/provider/CallLog$Calls;->CONTENT_URI:Landroid/net/Uri;
-
-    invoke-virtual/range {v7 .. v12}, Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
-
-    move-result-object v7
-
-    if-eqz v7, :cond_etc
-
-    invoke-interface {v7}, Landroid/database/Cursor;->moveToFirst()Z
-
-    move-result v13
-
-    if-eqz v13, :cond_etc
-
-    sget-object v1, Landroid/provider/CallLog$Calls;->NUMBER:Ljava/lang/String;
-
-    invoke-interface {v7, v1}, Landroid/database/Cursor;->getColumnIndexOrThrow(Ljava/lang/String;)I
-
-    move-result v2
-
-    invoke-interface {v7, v2}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
-
-    move-result-object v1
-
-    if-eqz v1, :cond_etc
-
-    invoke-virtual {v1}, Ljava/lang/String;->length()I
-
-    move-result v2
-
-    if-eqz v2, :cond_etc
-
-    invoke-interface {v7}, Landroid/database/Cursor;->close()V
-
-    return-object v1
 
     :cond_nomatch
     return-object v3
