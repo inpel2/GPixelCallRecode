@@ -157,6 +157,14 @@
 
     invoke-virtual {v0}, Lcom/tmp/callrec/MainActivity;->finish()V
 
+    :cond_item4
+    const/4 v2, 0x4
+
+    if-ne v1, v2, :cond_ret
+
+    # 경로 설정
+    invoke-virtual {v0}, Lcom/tmp/callrec/MainActivity;->startPickPath()V
+
     :cond_ret
     const/4 v0, 0x1
 

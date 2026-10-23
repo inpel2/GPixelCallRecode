@@ -3416,6 +3416,14 @@
 
     move-result-object v1
 
+    if-eqz v1, :ms_ok
+
+    invoke-virtual {p0}, Lcom/tmp/callrec/MainActivity;->msFiles()[Ljava/io/File;
+
+    move-result-object v1
+
+    :ms_ok
+
     .line 371
     const/4 v2, 0x0
 
@@ -5214,7 +5222,7 @@
 .end method
 
 .method public permChk()V
-    .locals 5
+    .locals 4
 
     invoke-static {}, Landroid/os/Environment;->isExternalStorageManager()Z
 
@@ -5222,40 +5230,73 @@
 
     if-nez v0, :done
 
-    new-instance v0, Landroid/app/AlertDialog$Builder;
+    invoke-virtual {p0}, Lcom/tmp/callrec/MainActivity;->mediaGranted()Z
 
-    invoke-direct {v0, p0}, Landroid/app/AlertDialog$Builder;-><init>(Landroid/content/Context;)V
+    move-result v0
 
-    const-string v1, "\ud30c\uc77c \uc811\uadfc \uad8c\ud55c"
-
-    invoke-virtual {v0, v1}, Landroid/app/AlertDialog$Builder;->setTitle(Ljava/lang/CharSequence;)Landroid/app/AlertDialog$Builder;
-
-    const-string v1, "\ub179\uc74c \ud30c\uc77c\uc744 \ubd88\ub7ec\uc624\ub824\uba74 '\ubaa8\ub4e0 \ud30c\uc77c \uad00\ub9ac \ud5c8\uc6a9' \uad8c\ud55c\uc774 \ud544\uc694\ud569\ub2c8\ub2e4.\n\ud5c8\uc6a9 \ud654\uba74\uc5d0\uc11c \uc2a4\uc704\uce58\ub97c \ucf1c \uc8fc\uc138\uc694."
-
-    invoke-virtual {v0, v1}, Landroid/app/AlertDialog$Builder;->setMessage(Ljava/lang/CharSequence;)Landroid/app/AlertDialog$Builder;
-
-    const-string v1, "\uc9c0\uae04 \ud5c8\uc6a9"
-
-    new-instance v2, Lcom/tmp/callrec/MainActivity$PermGo;
-
-    invoke-direct {v2, p0}, Lcom/tmp/callrec/MainActivity$PermGo;-><init>(Lcom/tmp/callrec/MainActivity;)V
-
-    invoke-virtual {v0, v1, v2}, Landroid/app/AlertDialog$Builder;->setPositiveButton(Ljava/lang/CharSequence;Landroid/content/DialogInterface$OnClickListener;)Landroid/app/AlertDialog$Builder;
-
-    const-string v1, "\ub098\uc911\uc5d0"
-
-    const/4 v2, 0x0
-
-    invoke-virtual {v0, v1, v2}, Landroid/app/AlertDialog$Builder;->setNegativeButton(Ljava/lang/CharSequence;Landroid/content/DialogInterface$OnClickListener;)Landroid/app/AlertDialog$Builder;
+    if-nez v0, :done
 
     const/4 v3, 0x1
 
     iput v3, p0, Lcom/tmp/callrec/MainActivity;->permAsked:I
 
-    invoke-virtual {v0}, Landroid/app/AlertDialog$Builder;->show()Landroid/app/AlertDialog;
+    sget v1, Landroid/os/Build$VERSION;->SDK_INT:I
+
+    const/16 v0, 0x21
+
+    if-lt v1, v0, :old
+
+    const-string v2, "android.permission.READ_MEDIA_AUDIO"
+
+    goto :ask
+
+    :old
+    const-string v2, "android.permission.READ_EXTERNAL_STORAGE"
+
+    :ask
+    new-array v1, v3, [Ljava/lang/String;
+
+    const/4 v0, 0x0
+
+    aput-object v2, v1, v0
+
+    invoke-virtual {p0, v1, v3}, Lcom/tmp/callrec/MainActivity;->requestPermissions([Ljava/lang/String;I)V
 
     :done
     return-void
+.end method
+
+.method public mediaGranted()Z
+    .locals 3
+
+    sget v0, Landroid/os/Build$VERSION;->SDK_INT:I
+
+    const/16 v1, 0x21
+
+    if-lt v0, v1, :old
+
+    const-string v2, "android.permission.READ_MEDIA_AUDIO"
+
+    goto :chk
+
+    :old
+    const-string v2, "android.permission.READ_EXTERNAL_STORAGE"
+
+    :chk
+    invoke-virtual {p0, v2}, Lcom/tmp/callrec/MainActivity;->checkSelfPermission(Ljava/lang/String;)I
+
+    move-result v0
+
+    if-eqz v0, :no
+
+    const/4 v1, 0x1
+
+    return v1
+
+    :no
+    const/4 v1, 0x0
+
+    return v1
 .end method
 
 .method protected onResume()V
@@ -5264,6 +5305,12 @@
     invoke-super {p0}, Landroid/app/Activity;->onResume()V
 
     invoke-static {}, Landroid/os/Environment;->isExternalStorageManager()Z
+
+    move-result v0
+
+    if-nez v0, :granted
+
+    invoke-virtual {p0}, Lcom/tmp/callrec/MainActivity;->mediaGranted()Z
 
     move-result v0
 
@@ -5302,6 +5349,209 @@
 
     :fin
     return-void
+.end method
+
+.method public onRequestPermissionsResult(I[Ljava/lang/String;[I)V
+    .locals 4
+
+    array-length v1, p3
+
+    if-lez v1, :nores
+
+    const/4 v1, 0x0
+
+    aget v0, p3, v1
+
+    if-eqz v0, :denied
+
+    const/4 v1, 0x2
+
+    iput v1, p0, Lcom/tmp/callrec/MainActivity;->permAsked:I
+
+    invoke-virtual {p0}, Lcom/tmp/callrec/MainActivity;->rebuild()V
+
+    const-string v2, "\uad8c\ud55c\uc774 \ud5c8\uc6a9\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \ubaa9\ub85d\uc744 \ubd88\ub7ec\uc654\uc2b5\ub2c8\ub2e4."
+
+    const/4 v3, 0x0
+
+    invoke-static {p0, v2, v3}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Landroid/widget/Toast;->show()V
+
+    return-void
+
+    :denied
+    const-string v2, "\uad8c\ud55c\uc774 \uac70\ubd80\ub418\uc5c8\uc2b5\ub2c8\ub2e4. \uc571 \uc815\ubcf4\uc5d0\uc11c \ubbf8\ub514\uc5b4 \uad8c\ud55c\uc744 \ud5c8\uc6a9\ud574 \uc8fc\uc138\uc694."
+
+    const/4 v3, 0x1
+
+    invoke-static {p0, v2, v3}, Landroid/widget/Toast;->makeText(Landroid/content/Context;Ljava/lang/CharSequence;I)Landroid/widget/Toast;
+
+    move-result-object v2
+
+    invoke-virtual {v2}, Landroid/widget/Toast;->show()V
+
+    :nores
+    return-void
+.end method
+
+.method public msFiles()[Ljava/io/File;
+    .locals 9
+
+    :try_start_0
+    invoke-virtual {p0}, Lcom/tmp/callrec/MainActivity;->getContentResolver()Landroid/content/ContentResolver;
+
+    move-result-object v0
+
+    sget-object v1, Landroid/provider/MediaStore$Audio$Media;->EXTERNAL_CONTENT_URI:Landroid/net/Uri;
+
+    const/4 v8, 0x1
+
+    new-array v2, v8, [Ljava/lang/String;
+
+    const/4 v8, 0x0
+
+    const-string v3, "_data"
+
+    aput-object v3, v2, v8
+
+    const-string v3, "_data LIKE ?"
+
+    const/4 v8, 0x1
+
+    new-array v4, v8, [Ljava/lang/String;
+
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    iget-object v8, p0, Lcom/tmp/callrec/MainActivity;->dir:Ljava/io/File;
+
+    invoke-virtual {v8}, Ljava/io/File;->toString()Ljava/lang/String;
+
+    move-result-object v8
+
+    invoke-virtual {v5, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    const-string v8, "/%"
+
+    invoke-virtual {v5, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    const/4 v8, 0x0
+
+    aput-object v5, v4, v8
+
+    const/4 v5, 0x0
+
+    new-instance v6, Ljava/util/ArrayList;
+
+    invoke-direct {v6}, Ljava/util/ArrayList;-><init>()V
+
+    invoke-virtual/range {v0 .. v5}, Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
+
+    move-result-object v7
+
+    const/4 v0, 0x0
+
+    const/4 v1, 0x0
+
+    const/4 v2, 0x0
+
+    const/4 v3, 0x0
+
+    const/4 v4, 0x0
+
+    const/4 v5, 0x0
+
+    const/4 v8, 0x0
+
+    if-eqz v7, :ret0
+
+    :loop
+    invoke-interface {v7}, Landroid/database/Cursor;->moveToNext()Z
+
+    move-result v0
+
+    if-eqz v0, :endc
+
+    const/4 v0, 0x0
+
+    invoke-interface {v7, v0}, Landroid/database/Cursor;->getString(I)Ljava/lang/String;
+
+    move-result-object v0
+
+    if-eqz v0, :skip
+
+    new-instance v1, Ljava/io/File;
+
+    invoke-direct {v1, v0}, Ljava/io/File;-><init>(Ljava/lang/String;)V
+
+    invoke-virtual {v6, v1}, Ljava/util/ArrayList;->add(Ljava/lang/Object;)Z
+
+    :skip
+    const/4 v0, 0x0
+
+    const/4 v1, 0x0
+
+    goto :loop
+
+    :endc
+    invoke-interface {v7}, Landroid/database/Cursor;->close()V
+
+    const/4 v7, 0x0
+
+    :ret0
+    const/4 v3, 0x0
+
+    new-array v3, v3, [Ljava/io/File;
+
+    invoke-virtual {v6, v3}, Ljava/util/ArrayList;->toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+
+    move-result-object v3
+
+    check-cast v3, [Ljava/io/File;
+
+    :try_end_0
+    .catch Ljava/lang/Throwable; {:try_start_0 .. :try_end_0} :catchall
+
+    return-object v3
+
+    :catchall
+    move-exception v6
+
+    const/4 v3, 0x0
+
+    const-string v4, "recpatch"
+
+    new-instance v5, Ljava/lang/StringBuilder;
+
+    invoke-direct {v5}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v8, "msFiles fail: "
+
+    invoke-virtual {v5, v8}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
+    move-result-object v5
+
+    invoke-virtual {v5, v6}, Ljava/lang/StringBuilder;->append(Ljava/lang/Object;)Ljava/lang/StringBuilder;
+
+    move-result-object v5
+
+    invoke-virtual {v5}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-static {v4, v5}, Landroid/util/Log;->e(Ljava/lang/String;Ljava/lang/String;)I
+
+    new-array v3, v3, [Ljava/io/File;
+
+    return-object v3
 .end method
 
 .method public devView()Landroid/widget/FrameLayout;

@@ -76,6 +76,14 @@
 
     invoke-interface {v3, v4, v5, v6, v7}, Landroid/view/Menu;->add(IIILjava/lang/CharSequence;)Landroid/view/MenuItem;
 
+    const/4 v5, 0x4
+
+    move v6, v5
+
+    const-string v7, "\uacbd\ub85c \uc124\uc815"
+
+    invoke-interface {v3, v4, v5, v6, v7}, Landroid/view/Menu;->add(IIILjava/lang/CharSequence;)Landroid/view/MenuItem;
+
     new-instance v4, Lcom/tmp/callrec/MainActivity$MenuPick;
 
     invoke-direct {v4, v0}, Lcom/tmp/callrec/MainActivity$MenuPick;-><init>(Lcom/tmp/callrec/MainActivity;)V
