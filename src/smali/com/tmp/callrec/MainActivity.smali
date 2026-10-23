@@ -129,6 +129,8 @@
 
 .field private permAsked:I
 
+.field aboutSpinner:Lcom/tmp/callrec/SpinnerView;
+
 
 # direct methods
 .method static constructor <clinit>()V
@@ -4635,6 +4637,15 @@
 
     invoke-virtual {v0, v1}, Landroid/widget/FrameLayout;->setVisibility(I)V
 
+    const/4 v2, 0x0
+
+    iget-object v3, p0, Lcom/tmp/callrec/MainActivity;->aboutSpinner:Lcom/tmp/callrec/SpinnerView;
+
+    if-eqz v3, :sk2
+
+    invoke-virtual {v3, v2}, Lcom/tmp/callrec/SpinnerView;->setVisibility(I)V
+
+    :sk2
     return-object v0
 
     :build
@@ -4714,6 +4725,8 @@
 
     invoke-direct {v4, p0}, Lcom/tmp/callrec/SpinnerView;-><init>(Landroid/content/Context;)V
 
+    iput-object v4, p0, Lcom/tmp/callrec/MainActivity;->aboutSpinner:Lcom/tmp/callrec/SpinnerView;
+
     iget v5, p0, Lcom/tmp/callrec/MainActivity;->dens:F
 
     const/high16 v6, 0x43200000    # 160.0f
@@ -4772,6 +4785,12 @@
     invoke-direct {v6, v5, v5, v7}, Landroid/widget/FrameLayout$LayoutParams;-><init>(III)V
 
     invoke-virtual {v3, v4, v6}, Landroid/widget/FrameLayout;->addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
+
+    new-instance v4, Lcom/tmp/callrec/MainActivity$GitOpen;
+
+    invoke-direct {v4, p0}, Lcom/tmp/callrec/MainActivity$GitOpen;-><init>(Lcom/tmp/callrec/MainActivity;)V
+
+    invoke-virtual {v3, v4}, Landroid/view/View;->setOnClickListener(Landroid/view/View$OnClickListener;)V
 
     new-instance v4, Landroid/widget/LinearLayout$LayoutParams;
 

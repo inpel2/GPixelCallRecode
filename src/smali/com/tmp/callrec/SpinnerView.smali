@@ -106,7 +106,7 @@
 
     iget v0, p0, Lcom/tmp/callrec/SpinnerView;->mStart:F
 
-    const/high16 v1, 0x40a00000    # 5.0f
+    const/high16 v1, 0x40000000    # 2.0f
 
     add-float v0, v0, v1
 
@@ -123,7 +123,7 @@
 
     iget v0, p0, Lcom/tmp/callrec/SpinnerView;->mT:F
 
-    const v1, 0x3ca3d70a    # 0.02f
+    const v1, 0x3c23d70a    # 0.01f
 
     add-float/2addr v0, v1
 

@@ -24,7 +24,7 @@
 
 # virtual methods
 .method public onClick(Landroid/view/View;)V
-    .locals 7
+    .locals 8
 
     iget-object v0, p0, Lcom/tmp/callrec/MainActivity$InqSend;->this$0:Lcom/tmp/callrec/MainActivity;
 
@@ -86,6 +86,7 @@
 
     move-result-object v5
 
+    # mailto URI
     new-instance v2, Ljava/lang/StringBuilder;
 
     invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
@@ -112,22 +113,72 @@
 
     invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
 
+    move-result-object v6
+
+    invoke-static {v6}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
+
+    move-result-object v6
+
+    # web gmail fallback URI
+    new-instance v2, Ljava/lang/StringBuilder;
+
+    invoke-direct {v2}, Ljava/lang/StringBuilder;-><init>()V
+
+    const-string v3, "https://mail.google.com/mail/?igu=1&view=cm&fs=1&to=cocoa99999999990000000@gmail.com&su="
+
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
+
     move-result-object v2
 
-    invoke-static {v2}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
+    invoke-virtual {v2, v4}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
     move-result-object v2
 
-    new-instance v3, Landroid/content/Intent;
+    const-string v3, "&body="
 
-    const-string v4, "android.intent.action.SENDTO"
+    invoke-virtual {v2, v3}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-direct {v3, v4}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+    move-result-object v2
 
-    invoke-virtual {v3, v2}, Landroid/content/Intent;->setData(Landroid/net/Uri;)Landroid/content/Intent;
+    invoke-virtual {v2, v5}, Ljava/lang/StringBuilder;->append(Ljava/lang/String;)Ljava/lang/StringBuilder;
 
-    invoke-virtual {v0, v3}, Lcom/tmp/callrec/MainActivity;->startActivity(Landroid/content/Intent;)V
+    move-result-object v2
 
+    invoke-virtual {v2}, Ljava/lang/StringBuilder;->toString()Ljava/lang/String;
+
+    move-result-object v7
+
+    invoke-static {v7}, Landroid/net/Uri;->parse(Ljava/lang/String;)Landroid/net/Uri;
+
+    move-result-object v7
+
+    new-instance v2, Landroid/content/Intent;
+
+    const-string v3, "android.intent.action.SENDTO"
+
+    invoke-direct {v2, v3}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+
+    invoke-virtual {v2, v6}, Landroid/content/Intent;->setData(Landroid/net/Uri;)Landroid/content/Intent;
+
+    :try_start_1
+    invoke-virtual {v0, v2}, Lcom/tmp/callrec/MainActivity;->startActivity(Landroid/content/Intent;)V
+    :try_end_1
+    .catch Landroid/content/ActivityNotFoundException; {:try_start_1 .. :try_end_1} :catchweb
+
+    goto :hide
+
+    :catchweb
+    new-instance v2, Landroid/content/Intent;
+
+    const-string v3, "android.intent.action.VIEW"
+
+    invoke-direct {v2, v3}, Landroid/content/Intent;-><init>(Ljava/lang/String;)V
+
+    invoke-virtual {v2, v7}, Landroid/content/Intent;->setData(Landroid/net/Uri;)Landroid/content/Intent;
+
+    invoke-virtual {v0, v2}, Lcom/tmp/callrec/MainActivity;->startActivity(Landroid/content/Intent;)V
+
+    :hide
     iget-object v1, v0, Lcom/tmp/callrec/MainActivity;->inqBox:Landroid/widget/FrameLayout;
 
     if-eqz v1, :fin
