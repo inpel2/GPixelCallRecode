@@ -139,7 +139,7 @@
     .locals 1
 
     .line 40
-    const-string v0, "^call_(\\d{7,15})_"
+    const-string v0, "^(?:\\.pending-\\d+-)?call_(\\d{7,15})_"
 
     invoke-static {v0}, Ljava/util/regex/Pattern;->compile(Ljava/lang/String;)Ljava/util/regex/Pattern;
 
@@ -424,6 +424,12 @@
 
     .line 406
     move-object/from16 v5, p2
+
+    invoke-interface {v5}, Ljava/util/List;->size()I
+
+    move-result v2
+
+    add-int/lit8 v2, v2, -0x1
 
     invoke-interface {v5, v2}, Ljava/util/List;->get(I)Ljava/lang/Object;
 
@@ -3599,25 +3605,17 @@
 
     move-result-object v1
 
-    if-eqz v1, :ms_ok
-
-    invoke-virtual {p0}, Lcom/tmp/callrec/MainActivity;->msFiles()[Ljava/io/File;
-
-    move-result-object v1
-
-    :ms_ok
-
     .line 371
     const/4 v2, 0x0
 
-    if-eqz v1, :cond_1
+    if-eqz v1, :msu_start
 
     array-length v3, v1
 
     move v4, v2
 
     :goto_0
-    if-ge v4, v3, :cond_1
+    if-ge v4, v3, :msu_start
 
     aget-object v5, v1, v4
 
@@ -3640,6 +3638,8 @@
 
     goto :goto_0
 
+    :msu_start
+
     invoke-virtual {p0}, Lcom/tmp/callrec/MainActivity;->msFiles()[Ljava/io/File;
 
     move-result-object v1
@@ -3657,7 +3657,7 @@
 
     if-eqz v5, :msu_next
 
-    invoke-interface {v0}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
+    invoke-interface {v0, v5}, Ljava/util/List;->contains(Ljava/lang/Object;)Z
 
     move-result v6
 
@@ -4780,7 +4780,7 @@
 
     invoke-virtual {v2, v3, v4}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
 
-    # 확인 button
+    # ?癲ル슢캉????button
     new-instance v3, Landroid/widget/Button;
 
     invoke-direct {v3, p0}, Landroid/widget/Button;-><init>(Landroid/content/Context;)V
@@ -5680,13 +5680,35 @@
 
     aput-object v5, v4, v8
 
+    new-instance v8, Landroid/os/Bundle;
+
+    invoke-direct {v8}, Landroid/os/Bundle;-><init>()V
+
+    const-string v5, "android:query-arg-match-pending"
+
+    const/4 v6, 0x1
+
+    invoke-virtual {v8, v5, v6}, Landroid/os/Bundle;->putInt(Ljava/lang/String;I)V
+
+    const-string v5, "android:query-arg-sql-selection"
+
+    invoke-virtual {v8, v5, v3}, Landroid/os/Bundle;->putString(Ljava/lang/String;Ljava/lang/String;)V
+
+    const-string v5, "android:query-arg-sql-selection-args"
+
+    invoke-virtual {v8, v5, v4}, Landroid/os/Bundle;->putStringArray(Ljava/lang/String;[Ljava/lang/String;)V
+
+    move-object v3, v8
+
+    const/4 v4, 0x0
+
     const/4 v5, 0x0
 
     new-instance v6, Ljava/util/ArrayList;
 
     invoke-direct {v6}, Ljava/util/ArrayList;-><init>()V
 
-    invoke-virtual/range {v0 .. v5}, Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;)Landroid/database/Cursor;
+    invoke-virtual/range {v0 .. v4}, Landroid/content/ContentResolver;->query(Landroid/net/Uri;[Ljava/lang/String;Landroid/os/Bundle;Landroid/os/CancellationSignal;)Landroid/database/Cursor;
 
     move-result-object v7
 
@@ -6695,7 +6717,7 @@
 
     invoke-virtual {v2, v3, v4}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
 
-    # Powered by 인플
+    # Powered by ?癲ル슢?뤸뤃??
     new-instance v3, Landroid/widget/TextView;
 
     invoke-direct {v3, p0}, Landroid/widget/TextView;-><init>(Landroid/content/Context;)V
@@ -6732,7 +6754,7 @@
 
     invoke-virtual {v2, v3, v4}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
 
-    # GitHub 준비 중
+    # GitHub 嚥싳쉶瑗ц짆堉샕??嚥?
     new-instance v3, Landroid/widget/TextView;
 
     invoke-direct {v3, p0}, Landroid/widget/TextView;-><init>(Landroid/content/Context;)V
@@ -6786,7 +6808,7 @@
 
     invoke-virtual {v2, v3, v4}, Landroid/widget/LinearLayout;->addView(Landroid/view/View;Landroid/view/ViewGroup$LayoutParams;)V
 
-    # 확인 button
+    # ?癲ル슢캉????button
     new-instance v3, Landroid/widget/Button;
 
     invoke-direct {v3, p0}, Landroid/widget/Button;-><init>(Landroid/content/Context;)V
@@ -7077,6 +7099,22 @@
     invoke-virtual {v2, v0}, Ljava/util/regex/Matcher;->group(I)Ljava/lang/String;
 
     move-result-object v3
+
+    invoke-virtual {v3}, Ljava/lang/String;->length()I
+
+    move-result v0
+
+    const/16 v4, 0x8
+
+    if-le v0, v4, :keepnum
+
+    add-int/lit8 v0, v0, -0x8
+
+    invoke-virtual {v3, v0}, Ljava/lang/String;->substring(I)Ljava/lang/String;
+
+    move-result-object v3
+
+    :keepnum
 
     const/4 v0, 0x2
 
